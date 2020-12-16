@@ -2,6 +2,7 @@ import './App.css';
 import Home from './pages/home';
 import RecipeList from './pages/recipes/list';
 import RecipeOne from './pages/recipes/one/RecipesOne';
+import RecipesEdit from './pages/recipes/edit/RecipesEdit';
 import {
   BrowserRouter as Router,
   Switch,
@@ -10,7 +11,7 @@ import {
 } from "react-router-dom";
 import Header from "./components/header/Header";
 import RecipesNew from "./pages/recipes/new/RecipesNew";
-import {recipeList, recipeNew, recipeOf} from "./constants/urls";
+import {recipeEditOf, recipeList, recipeNew, recipeOf} from "./constants/urls";
 
 function App() {
   return (
@@ -21,8 +22,11 @@ function App() {
           <Route path={recipeNew}>
             <RecipesNew />
           </Route>
-          <Route path={recipeOf(":id")}>
+          <Route path={recipeOf(":id")} exact={true}>
             <RecipeOne />
+          </Route>
+          <Route path={recipeEditOf(":id")}>
+            <RecipesEdit />
           </Route>
           <Route path={recipeList}>
             <RecipeList />

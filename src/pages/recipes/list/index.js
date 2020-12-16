@@ -1,6 +1,6 @@
 import {Link, useLocation} from "react-router-dom";
 import {useRecipeList} from "../../../hooks/api";
-import {recipeNew, recipeOf} from "../../../constants/urls";
+import {recipeEditOf, recipeNew, recipeOf} from "../../../constants/urls";
 
 const RecipeListItem = (props) => {
   return (<div>
@@ -10,6 +10,12 @@ const RecipeListItem = (props) => {
         Go!
       </button>
     </Link>
+
+    <Link to={recipeEditOf(props.id)}>
+      <button>
+        Edit
+      </button>
+    </Link>
   </div>)
 }
 const parseQueryString = (queryString) => {
@@ -17,8 +23,12 @@ const parseQueryString = (queryString) => {
   return JSON.parse('{"' + decodeURI(search).replace(/"/g, '\\"').replace(/&/g, '","').replace(/=/g,'":"') + '"}')
 }
 export default  () =>{
+
   const location = useLocation();
-  const queryString = parseQueryString(location.search);
+  let queryString = [];
+  if(location.search){
+    queryString = parseQueryString(location.search);
+  }
   const recipes = useRecipeList();
   if (!recipes) {
     return <div>Loading...</div>;

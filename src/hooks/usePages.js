@@ -6,11 +6,12 @@ export const usePages = () => {
   let location = useLocation();
   const history = useHistory();
   const isRecipePage = location.pathname.startsWith('/recipes/');
+
   return {
     isRecipePage,
     isRecipeList: location.pathname === recipeList,
     isHome: location.pathname === '/',
-    goToRecipeList: search => history.push(recipeList + (search ? ('?search=' + search) : '')),
+    goToRecipeList: search => history.push(recipeList + (search.length > 0 ? ('?search=' + search) : '')),
     goToHome: () => history.push('/'),
     goToRecipePage: id => history.push(recipeOf(id)),
   }

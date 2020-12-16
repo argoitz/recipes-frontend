@@ -1,62 +1,85 @@
-import {useEffect, useState} from "react";
+import { useEffect, useState } from "react";
 
-const hostname = 'http://localhost:8000';
+const hostname = "http://localhost:8000";
 const options = {
   headers: {
-    'Content-Type': 'application/json',
-    'Accepts': 'application/json',
-  }
-}
+    "Content-Type": "application/json",
+    Accepts: "application/json",
+  },
+};
 
 export const useGet = (url) => {
   const [response, setResponse] = useState();
   useEffect(() => {
     fetch(hostname + url, {
-      method: 'GET',
+      method: "GET",
       ...options,
-    }).then(response => response.json())
-      .then(response => {
+    })
+      .then((response) => response.json())
+      .then((response) => {
         setResponse(response);
-      })
+      });
   }, [url]);
   return response;
-}
+};
 
-export const useRecipeList = () => useGet('/recipes');
-export const useRecipe = (id) => useGet('/recipes/' + id);
+export const useRecipeList = () => useGet("/recipes");
+export const useRecipe = (id) => useGet("/recipes/" + id);
 
 export const useCreateRecipeHandler = () => {
   const [loading, setLoading] = useState(false);
   return {
     handler: (body) => {
       setLoading(true);
-      return fetch(hostname + '/recipes', {
-        method: 'POST',
+      return fetch(hostname + "/recipes", {
+        method: "POST",
         body: JSON.stringify(body),
         ...options,
-      }).then(response => response.json())
-        .then(response => {
+      })
+        .then((response) => response.json())
+        .then((response) => {
           setLoading(false);
           return response;
-        })
+        });
     },
     loading,
-  }
-}
+  };
+};
+
+export const useEditRecipeHandler = (id) => {
+  const [loading, setLoading] = useState(false);
+  return {
+    handler: (body) => {
+      setLoading(true);
+      console.log(JSON.stringify(body));
+      return fetch(hostname + "/recipes/" + id, {
+        method: "PUT",
+        body: JSON.stringify(body),
+        ...options,
+      })
+        .then((response) => response.json())
+        .then((response) => {
+          setLoading(false);
+          return response;
+        });
+    },
+    loading,
+  };
+};
 
 export const useDeleteRecipeHandler = (id) => {
   const [loading, setLoading] = useState(false);
   return {
     handler: () => {
       setLoading(true);
-      return fetch(hostname + '/recipes/' + id, {
-        method: 'DELETE',
+      return fetch(hostname + "/recipes/" + id, {
+        method: "DELETE",
         ...options,
-      }).then(result => {
-        setLoading(false)
+      }).then((result) => {
+        setLoading(false);
         return result;
       });
     },
     loading,
   };
-}
+};
